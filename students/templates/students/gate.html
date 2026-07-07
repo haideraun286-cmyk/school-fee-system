@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gate Scanner</title>
+</head>
+<body>
+
+    <h1>Scan Student ID</h1>
+    
+    <input type="text" id="scanner-input" placeholder="Scan QR code here..." autofocus>
+
+    <div id="student-info">
+        <!-- Student details will appear here after scan -->
+    </div>
+
+    <script>
+        const input = document.getElementById('scanner-input');
+        
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const studentId = input.value;
+                input.value = '';
+                fetchStudent(studentId);
+            }
+        });
+
+        function fetchStudent(id) {
+            fetch(`/students/scan/${id}/`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('student-info').innerHTML = `
+                        <h2>${data.name}</h2>
+                        <p>Class: ${data.class_name}</p>
+                        <p>Fee Status: ${data.fee_status}</p>
+                    `;
+                });
+        }
+    </script>
+
+</body>
+</html>
