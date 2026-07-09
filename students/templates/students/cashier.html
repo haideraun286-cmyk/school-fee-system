@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cashier Panel</title>
+</head>
+<body>
+    <h1>Cashier Panel</h1>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="student_id" placeholder="Enter Student ID" required>
+        
+        <select name="status">
+            <option value="Paid">Paid</option>
+            <option value="Unpaid">Unpaid</option>
+            <option value="Deferred">Deferred</option>
+        </select>
+
+        <input type="date" name="deferred_date">
+        
+        <button type="submit">Update Fee Status</button>
+    </form>
+
+    {% if student %}
+        <h2>{{ student.name }}</h2>
+        <p>Class: {{ student.class_name }}</p>
+        <p>Fee Status: {{ fee.status }}</p>
+        <p>Amount Due: Rs. {{ fee.amount_due }}</p>
+        <p>Due Date: {{ fee.due_date }}</p>
+        {% if fee.deferred_date %}
+            <p>Deferred Until: {{ fee.deferred_date }}</p>
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>

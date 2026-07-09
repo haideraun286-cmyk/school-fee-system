@@ -12,3 +12,17 @@ class Student(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.student_id}"
+    
+class Fee(models.Model):
+    STATUS_CHOICES = [
+    ('Paid', 'Paid'),
+    ('Unpaid', 'Unpaid'),
+    ('Deferred', 'Deferred'),
+]
+    student=models.ForeignKey(Student,on_delete=models.CASCADE)
+    amount_due=models.DecimalField(max_digits=10,decimal_places=2)
+    due_date=models.DateField()
+    status=models.CharField(max_length=15,choices=STATUS_CHOICES)
+    deffered_date=models.DateField(null=True,blank=True)
+    paid=models.DateField(null=True,blank=True)
+    

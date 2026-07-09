@@ -32,6 +32,9 @@
                         <h2>${data.name}</h2>
                         <p>Class: ${data.class_name}</p>
                         <p>Fee Status: ${data.fee_status}</p>
+                        <p>Amount Due: Rs. ${data.fee_amount_due}</p>
+                        <p>Due Date: ${data.due_date}</p>
+                        <p style="color: ${data.fee_status === 'Unpaid' ? 'red' : 'green'}">${data.fee_status}</p>
                     `;
                 });
         }
