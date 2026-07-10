@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Student
 from .models import Fee
+from .models import Attendance
 
 def gate(request):
     return render(request, 'students/gate.html')
@@ -10,13 +11,24 @@ def scan_student(request, student_id):
     try:
         student = Student.objects.get(student_id=student_id)
         fee = Fee.objects.get(student=student)
-
+       
+        Attendance.objects.create(
+            student=student,
+            status='Present'
+        )
+        
+        # Hardcoded WhatsApp for now
+        print(f"Sending WhatsApp to {student.parent_phone}")
+        print(f"{student.name} has arrived at school.")
+        
         data = {
             'name': student.name,
             'class_name': student.class_name,
             'fee_status': fee.status,
             'fee_amount_due':fee.amount_due,
             'due_date':str(fee.due_date)
+            
+           
 
         }
         return JsonResponse(data)
@@ -49,3 +61,23 @@ def cashier(request):
         'fee': fee,
         'message': message
     })
+
+def mark_attendance(request, student_id):
+    try:
+        student = Student.objects.get(student_id=student_id)
+        
+        Attendance.objects.create(
+            student=student,
+            status='Present'
+        )
+        
+        # WhatsApp notification (hardcoded for now)
+        print(f"Sending WhatsApp to {student.parent_phone}")
+        print(f"{student.name} has arrived at school.")
+        
+        return JsonResponse({'success': True, 'message': f'{student.name} marked present'})
+    
+    except Student.DoesNotExist:
+        return JsonResponse({'error': 'Student not found'}, status=404)
+        
+

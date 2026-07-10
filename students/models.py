@@ -9,6 +9,8 @@ class Student(models.Model):
     phone = models.CharField(max_length=15)
     photo = models.ImageField(upload_to='student_photos/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    parent_phone = models.CharField(max_length=15, blank=True, null=True)
+    parent_name = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} - {self.student_id}"
@@ -26,3 +28,12 @@ class Fee(models.Model):
     deffered_date=models.DateField(null=True,blank=True)
     paid=models.DateField(null=True,blank=True)
     
+class Attendance(models.Model):
+    STATUS_CHOICES = [
+        ('Present', 'Present'),
+        ('Absent', 'Absent'),
+    ]
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='Present')
