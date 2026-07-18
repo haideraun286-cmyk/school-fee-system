@@ -11,6 +11,8 @@ class Student(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     parent_phone = models.CharField(max_length=15, blank=True, null=True)
     parent_name = models.CharField(max_length=100, blank=True, null=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} - {self.student_id}"

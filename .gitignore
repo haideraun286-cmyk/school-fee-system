@@ -1,4 +1,7 @@
 # Created by venv; see https://docs.python.org/3/library/venv.html
 id_cards/
 qr_codes/
+barcodes/
+static/
+
 

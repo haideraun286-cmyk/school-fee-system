@@ -1,44 +1,139 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Gate Scanner</title>
-</head>
-<body>
+{% extends 'students/base.html' %}
+{% block content %}
 
-    <h1>Scan Student ID</h1>
+<style>
+    .gate-screen {
+        text-align: center;
+        padding: 20px;
+    }
+    .student-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        margin-top: 30px;
+        display: none;
+    }
+    .student-name {
+        font-size: 60px;
+        font-weight: bold;
+        color: #1a73e8;
+    }
+    .student-class {
+        font-size: 35px;
+        color: #555;
+        margin: 10px 0;
+    }
+    .fee-status {
+        font-size: 45px;
+        font-weight: bold;
+        padding: 15px 40px;
+        border-radius: 10px;
+        margin-top: 20px;
+        display: inline-block;
+    }
+    .fee-paid { background: #d4edda; color: #155724; }
+    .fee-unpaid { background: #f8d7da; color: #721c24; }
+    .fee-deferred { background: #fff3cd; color: #856404; }
+    .scan-box {
+        font-size: 55px;
+        color: #888;
+        margin-top: 200px;
+        font-weight: bold;
+}
+    #scanner-input {
+        position: absolute;
+        left: -9999px;
+    }
+    .school-logo {
+        font-size: 40px;
+        font-weight: bold;
+        color: white;
+    }
+</style>
+
+<div class="gate-screen">
+    <input type="text" id="scanner-input" autofocus>
     
-    <input type="text" id="scanner-input" placeholder="Scan QR code here..." autofocus>
-
-    <div id="student-info">
-        <!-- Student details will appear here after scan -->
+    <div class="scan-box" id="scan-prompt">
+            Ready to Scan
     </div>
 
-    <script>
-        const input = document.getElementById('scanner-input');
-        
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const studentId = input.value;
-                input.value = '';
-                fetchStudent(studentId);
-            }
-        });
+    <div class="student-card" id="student-card">
+        <div class="student-name" id="student-name"></div>
+        <div class="student-class" id="student-class"></div>
+        <div class="fee-status" id="fee-status"></div>
+        <div style="font-size:25px; margin-top:15px" id="fee-amount"></div>
+    </div>
+</div>
 
-        function fetchStudent(id) {
-            fetch(`/students/scan/${id}/`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('student-info').innerHTML = `
-                        <h2>${data.name}</h2>
-                        <p>Class: ${data.class_name}</p>
-                        <p>Fee Status: ${data.fee_status}</p>
-                        <p>Amount Due: Rs. ${data.fee_amount_due}</p>
-                        <p>Due Date: ${data.due_date}</p>
-                        <p style="color: ${data.fee_status === 'Unpaid' ? 'red' : 'green'}">${data.fee_status}</p>
-                    `;
-                });
+<script>
+    const input = document.getElementById('scanner-input');
+    let resetTimer;
+
+    // Keep focus on hidden input always
+    document.addEventListener('click', () => input.focus());
+    setInterval(() => input.focus(), 500);
+
+    input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const studentId = input.value.trim();
+            input.value = '';
+            if (studentId) fetchStudent(studentId);
         }
-    </script>
+    });
 
-</body>
-</html>
+    function fetchStudent(id) {
+        clearTimeout(resetTimer);
+        
+        fetch(`/students/scan/${id}/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('student-name').textContent = data.name;
+                document.getElementById('student-class').textContent = 
+                    `Class: ${data.class_name}`;
+                
+            const feeEl = document.getElementById('fee-status');
+            feeEl.className = 'fee-status';
+            let feeText = data.fee_status;
+            if (data.fee_status === 'Deferred' && data.deferred_until) {
+            feeText = `Deferred until ${data.deferred_until}`;
+                }
+            feeEl.textContent = feeText;
+                
+                if (data.fee_status === 'Paid') {
+                    feeEl.classList.add('fee-paid');
+                } else if (data.fee_status === 'Unpaid') {
+                    feeEl.classList.add('fee-unpaid');
+                } else {
+                    feeEl.classList.add('fee-deferred');
+                }
+
+                document.getElementById('fee-amount').textContent = 
+                    `Amount Due: Rs. ${data.fee_amount_due}`;
+
+                document.getElementById('student-card').style.display = 'block';
+                document.getElementById('scan-prompt').style.display = 'none';
+
+                // Auto reset after 2 seconds
+                resetTimer = setTimeout(() => {
+                    document.getElementById('student-card').style.display = 'none';
+                    document.getElementById('scan-prompt').style.display = 'block';
+                }, 5000);
+            })
+            .catch(() => {
+    document.getElementById('student-name').textContent = 'Student Not Found';
+    document.getElementById('student-class').textContent = '';
+    document.getElementById('fee-status').textContent = '';
+    document.getElementById('fee-amount').textContent = '';
+    document.getElementById('fee-status').className = 'fee-status';
+    document.getElementById('student-card').style.display = 'block';
+    document.getElementById('scan-prompt').style.display = 'none';
+    resetTimer = setTimeout(() => {
+        document.getElementById('student-card').style.display = 'none';
+        document.getElementById('scan-prompt').style.display = 'block';
+    }, 5000);
+});
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>School Management System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background-color: #f0f2f5; }
+        .navbar { background-color: #1a73e8; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { color: white; font-size: 20px; }
+        .navbar a { color: white; text-decoration: none; margin-left: 20px; font-size: 15px; padding: 8px 16px; border-radius: 5px; }
+        .navbar a:hover { background-color: #1557b0; }
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { color: #1a73e8; margin-bottom: 20px; }
+        input, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+        button { background-color: #1a73e8; color: white; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; margin-top: 10px; }
+        button:hover { background-color: #1557b0; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background-color: #1a73e8; color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        tr:hover { background-color: #f5f5f5; }
+        .status-paid { color: green; font-weight: bold; }
+        .status-unpaid { color: red; font-weight: bold; }
+        .status-deferred { color: orange; font-weight: bold; }
+        .alert { padding: 12px; border-radius: 5px; margin-bottom: 15px; }
+        .alert-success { background-color: #d4edda; color: #155724; }
+        .alert-error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Al-Haider Educational World</h1>
+        <div>
+            <a href="/students/">Gate</a>
+            <a href="/students/cashier/">Cashier</a>
+            <a href="/students/attendance/">Attendance</a>
+        </div>
+    </div>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>
