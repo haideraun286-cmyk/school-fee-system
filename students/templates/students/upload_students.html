@@ -1,0 +1,29 @@
+{% extends 'students/base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Bulk Upload Students</h2>
+    
+    {% if message %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endif %}
+    
+    <p style="margin-bottom:15px">Excel columns must be in this order:</p>
+    <table style="margin-bottom:20px">
+        <tr>
+            <th>A</th><th>B</th><th>C</th><th>D</th>
+            <th>E</th><th>F</th><th>G</th><th>H</th><th>I</th>
+        </tr>
+        <tr>
+            <td>student_id</td><td>name</td><td>father_name</td>
+            <td>class_name</td><td>section</td><td>phone</td>
+            <td>parent_phone</td><td>address</td><td>date_of_birth</td>
+        </tr>
+    </table>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="excel_file" accept=".xlsx">
+        <button type="submit">Upload</button>
+    </form>
+</div>
+{% endblock %}

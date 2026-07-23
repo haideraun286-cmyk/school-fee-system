@@ -3,5 +3,9 @@ id_cards/
 qr_codes/
 barcodes/
 static/
-
+media/
+.env
+*.sqlite3
+__pycache__/
+*.pyc
 
