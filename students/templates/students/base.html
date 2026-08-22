@@ -1,47 +1,341 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>School Management System</title>
+    <title>Al-Haider Educational World</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background-color: #f0f2f5; }
-        .navbar { background-color: #1a73e8; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
-        .navbar h1 { color: white; font-size: 20px; }
-        .navbar a { color: white; text-decoration: none; margin-left: 20px; font-size: 15px; padding: 8px 16px; border-radius: 5px; }
-        .navbar a:hover { background-color: #1557b0; }
-        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-        .card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h2 { color: #1a73e8; margin-bottom: 20px; }
-        input, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
-        button { background-color: #1a73e8; color: white; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; margin-top: 10px; }
-        button:hover { background-color: #1557b0; }
-        table { width: 100%; border-collapse: collapse; }
-        th { background-color: #1a73e8; color: white; padding: 12px; text-align: left; }
-        td { padding: 12px; border-bottom: 1px solid #eee; }
-        tr:hover { background-color: #f5f5f5; }
-        .status-paid { color: green; font-weight: bold; }
-        .status-unpaid { color: red; font-weight: bold; }
-        .status-deferred { color: orange; font-weight: bold; }
-        .alert { padding: 12px; border-radius: 5px; margin-bottom: 15px; }
-        .alert-success { background-color: #d4edda; color: #155724; }
-        .alert-error { background-color: #f8d7da; color: #721c24; }
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+        @font-face {
+            font-family: 'Algerian';
+            src: local('Algerian');
+        }
+
+        :root {
+            --green:      #00733F;
+            --green-dark: #00502B;
+            --green-light:#00914F;
+            --gold:       #EFBC00;
+            --gold-dark:  #B88E00;
+            --gold-light: #FFD340;
+            --red:        #8F0F00;
+            --black:      #0A0A0A;
+            --white:      #FFFFFF;
+            --bg:         #F5F2E8;
+            --card-bg:    #FFFFFFEE;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at top left, rgba(0,115,63,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at bottom right, rgba(239,188,0,0.08) 0%, transparent 60%);
+            min-height: 100vh;
+        }
+
+        /* ── Navbar ── */
+        .navbar {
+            background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 60%, var(--green-light) 100%);
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+            border-bottom: 3px solid var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .school-title {
+            font-family: 'Algerian', 'Cinzel', serif !important;
+            color: #FFFFFF !important;
+            font-size: 22px !important;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0;
+            padding: 0;
+            border: none !important;
+            display: block !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .navbar-brand sub {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.85);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 7px 14px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(239,188,0,0.2);
+            color: var(--gold-light);
+        }
+
+        .nav-links a.active {
+            background: var(--gold);
+            color: var(--green-dark);
+            font-weight: 600;
+        }
+
+        /* ── Gold divider ── */
+        .gold-bar {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 28px 32px;
+            box-shadow: 0 2px 16px rgba(0,80,43,0.10), 0 1px 4px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,115,63,0.10);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-family: 'Algerian', 'Cinzel', serif;
+            color: var(--green-dark);
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gold);
+            display: inline-block;
+            letter-spacing: 0.8px;
+        }
+
+        h3 {
+            font-family: 'Algerian', 'Cinzel', serif;
+            color: var(--green);
+            font-size: 18px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Inputs ── */
+        input[type=text], input[type=date], input[type=file], select, textarea {
+            width: 100%;
+            padding: 10px 14px;
+            margin: 6px 0 12px;
+            border: 1.5px solid rgba(0,115,63,0.25);
+            border-radius: 7px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: #FAFAF7;
+            color: var(--black);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(0,115,63,0.12);
+        }
+
+        /* ── Buttons ── */
+        button, .btn {
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+            color: white;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,80,43,0.2);
+        }
+
+        button:hover, .btn:hover {
+            background: linear-gradient(135deg, var(--green-light) 0%, var(--green) 100%);
+            box-shadow: 0 4px 12px rgba(0,80,43,0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            color: var(--green-dark);
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: var(--green-dark);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e05555 0%, var(--red) 100%);
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--green-dark), var(--green));
+            color: var(--gold);
+            padding: 11px 14px;
+            text-align: left;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            font-size: 13px;
+            font-family: 'Algerian', 'Cinzel', serif;
+        }
+
+        td {
+            padding: 11px 14px;
+            border-bottom: 1px solid rgba(0,115,63,0.08);
+            color: #333;
+        }
+
+        tr:hover td { background: rgba(0,115,63,0.04); }
+
+        /* ── Alerts ── */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 7px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: rgba(0,115,63,0.10);
+            color: var(--green-dark);
+            border-left: 4px solid var(--green);
+        }
+
+        .alert-error {
+            background: rgba(143,15,0,0.08);
+            color: var(--red);
+            border-left: 4px solid var(--red);
+        }
+
+        /* ── Fee status colors ── */
+        .status-paid    { color: var(--green); font-weight: 700; }
+        .status-unpaid  { color: var(--red);   font-weight: 700; }
+        .status-deferred{ color: var(--gold-dark); font-weight: 700; }
+
+        /* ── Tabs ── */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 8px 18px;
+            background: rgba(0,115,63,0.08);
+            border: 1.5px solid rgba(0,115,63,0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--green-dark);
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--green);
+            color: var(--gold);
+            border-color: var(--green);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(0,115,63,0.15);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ── Footer strip ── */
+        .page-footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: rgba(0,80,43,0.4);
+            letter-spacing: 0.5px;
+        }
+       
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <h1>Al-Haider Educational World</h1>
+
+<nav class="navbar">
+    <div class="navbar-brand">
+        <img src="{% static 'logo.png' %}" alt="Al-Haider Logo" style="height: 52px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
         <div>
-            <a href="/students/">Gate</a>
-            <a href="/students/cashier/">Cashier</a>
-            <a href="/students/attendance/">Attendance</a>
-            <a href="/students/upload/">Upload</a>
+            <h1 class="school-title">Al-Haider Educational World</h1>   
+            <sub>Management System</sub>
         </div>
     </div>
-
-    <div class="container">
-        {% block content %}
-        {% endblock %}
+    <div class="nav-links">
+        <a href="/students/">Gate</a>
+        {% if user.is_authenticated %}
+            <a href="/students/cashier/">Cashier</a>
+            <a href="/students/attendance/">Attendance</a>
+            {% if user.is_superuser or user.is_staff %}
+                <a href="/students/admin-panel/">Admin</a>
+            {% endif %}
+            <span style="color:#FFD700; font-size:12.5px; font-weight:600; margin:0 6px; background:rgba(0,0,0,0.25); padding:5px 12px; border-radius:15px; border:1px solid rgba(239,188,0,0.4);">
+                 {{ user.username|title }}
+            </span>
+            <a href="/students/logout/" onclick="return confirm('Are you sure you want to log out?');" style="background:rgba(143,15,0,0.7); color:#FFF; font-weight:600;">
+                Logout
+            </a>
+        {% else %}
+            <a href="/students/login/" style="background:var(--gold); color:var(--green-dark); font-weight:700;">
+                Login
+            </a>
+        {% endif %}
     </div>
+</nav>
+<div class="gold-bar"></div>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<div class="page-footer">
+    Al-Haider Educational World — Street 11, Block 20, FB Area, Ancholi, Karachi
+</div>
 
 </body>
 </html>

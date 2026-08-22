@@ -1,0 +1,31 @@
+{% extends 'students/base.html' %}
+{% block content %}
+
+<div class="card">
+    <h2> Bulk Photo Upload</h2>
+    <p style="margin-bottom:15px; color:#555">
+        Create a ZIP file containing student photos.<br>
+        Each photo must be named exactly as the student ID:<br>
+        <strong>ct-25044.jpg, ct-25045.png</strong> etc.
+    </p>
+
+    {% if message %}
+        <div class="alert alert-success" style="margin-bottom:20px">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="photo_zip" accept=".zip" style="margin-bottom:15px">
+        <button type="submit">Upload & Assign Photos</button>
+    </form>
+
+    {% for r in results %}
+    {% if r|slice:":1" == "✓" %}
+        <div style="color:green">{{ r }}</div>
+        {% else %}
+        <div style="color:red">{{ r }}</div>
+        {% endif %}
+{% endfor %}
+</div>
+
+{% endblock %}

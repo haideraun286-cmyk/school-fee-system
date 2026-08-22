@@ -39,3 +39,38 @@ class Attendance(models.Model):
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='Present')
+
+class FeeRecord(models.Model):
+    STATUS_CHOICES = [
+        ('Paid', 'Paid'),
+        ('Unpaid', 'Unpaid'),
+        ('Deferred', 'Deferred'),
+    ]
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    month = models.IntegerField()
+    year = models.IntegerField()
+    amount_due = models.DecimalField(max_digits=10, decimal_places=2)
+    amount_carried = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='Unpaid')
+    deffered_date = models.DateField(null=True, blank=True)
+    paid_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['student', 'month', 'year']
+
+    def __str__(self):
+        return f"{self.student.name} - {self.month}/{self.year}"
+    
+    @property
+    def total_due(self):
+        return self.amount_due + self.amount_carried    
+
+from django.contrib.auth.models import User
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    must_change_password = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Profile for {self.user.username}"

@@ -88,6 +88,7 @@ def generate_card(student):
     out_path = os.path.join(BASE_DIR, 'id_cards', f'{student.student_id}.png')
     card.convert('RGB').save(out_path, dpi=(DPI, DPI))
     print(f"Done: {student.name}")
+    return out_path
 
 if __name__ == '__main__':
     # Save your template PNG as static/template.png first

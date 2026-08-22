@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django import forms
-from .models import Student,Fee,Attendance
+from .models import Student,Fee,Attendance,FeeRecord
 
 admin.site.register(Student)
 admin.site.register(Fee)
 admin.site.register(Attendance)
+admin.site.register(FeeRecord)
 
 class StudentAdminForm(forms.ModelForm):
     date_of_birth = forms.DateField(

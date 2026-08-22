@@ -120,3 +120,25 @@ STATIC_URL = 'static/'
 import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+FEE_STRUCTURE = {
+    'Mont': 3200,
+    'KG-1':3200,
+    'KG-2':3200,
+    '1': 3200,
+    '2': 3200,
+    '3': 3200,
+    '4': 3200,
+    '5': 3200,
+    '6': 3200,
+    '7': 3200,
+    '8': 3700,
+    '9': 3700,
+    '10': 3700,
+}
+
+# Authentication & Session Settings
+LOGIN_URL = '/students/login/'
+LOGIN_REDIRECT_URL = '/students/admin-panel/'
+SESSION_COOKIE_AGE = 28800  # 8 hours in seconds
+SESSION_SAVE_EVERY_REQUEST = True
+

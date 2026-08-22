@@ -1,0 +1,149 @@
+{% extends 'students/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .login-wrapper {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .login-card {
+        background: #FFFFFF;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 80, 43, 0.15);
+        border: 2px solid var(--gold);
+        max-width: 440px;
+        width: 100%;
+        padding: 40px 35px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .login-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--green-dark), var(--gold), var(--green-dark));
+    }
+
+    .login-header {
+        margin-bottom: 28px;
+    }
+
+    .login-brand-heading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        margin-bottom: 10px;
+    }
+
+    .login-brand-heading img {
+        height: 62px;
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+
+    .login-brand-heading h2 {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin: 0;
+        font-size: 24px;
+        line-height: 1;
+    }
+
+    .login-header p {
+        color: #666;
+        font-size: 13.5px;
+        margin-top: 4px;
+    }
+
+    .login-form .form-group {
+        text-align: left;
+        margin-bottom: 18px;
+    }
+
+    .login-form label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--green-dark);
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .login-btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        font-weight: 700;
+        margin-top: 10px;
+        border-radius: 8px;
+    }
+
+    .login-info-box {
+        margin-top: 24px;
+        padding: 12px;
+        background: rgba(0, 115, 63, 0.06);
+        border-radius: 8px;
+        border: 1px dashed rgba(0, 115, 63, 0.25);
+        font-size: 12px;
+        color: #555;
+        text-align: left;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="login-brand-heading">
+                <img src="{% static 'logo.png' %}" alt="Al-Haider Logo">
+                <h2>System Login</h2>
+            </div>
+            <p>Enter your credentials to access Cashier or Admin panel</p>
+        </div>
+
+        {% if message %}
+            <div class="alert {% if alert_type == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next_url }}">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter username" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" class="btn btn-gold login-btn">
+                Log In
+            </button>
+        </form>
+
+        <div class="login-info-box">
+            <strong>Access Control & Credentials:</strong><br>
+            • <strong>Cashier Login:</strong> Username <code>cashier</code> | Password <code>AlHaider#Cashier2026!</code><br>
+            • <strong>Cashiers</strong> have access to Fee Cashier and Attendance.<br>
+            • <strong>Admins</strong> have full access including Admin Panel and System tools.
+        </div>
+    </div>
+</div>
+
+{% endblock %}
