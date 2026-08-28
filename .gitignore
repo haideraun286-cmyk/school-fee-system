@@ -8,5 +8,6 @@ media/
 *.sqlite3
 __pycache__/
 *.pyc
+bulk_photos/
 
 bulk_photos/retouch.jpg
