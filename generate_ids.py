@@ -35,12 +35,20 @@ COORDS = {
 }
 
 # ── Fonts ──────────────────────────────────────────────────────
-try:
-    FONT_REG  = ImageFont.truetype("arial.ttf",   px(2.6))
-    FONT_BOLD = ImageFont.truetype("arialbd.ttf", px(2.6))
-except Exception:
-    FONT_REG  = ImageFont.load_default()
-    FONT_BOLD = FONT_REG
+FONT_REG_PATH  = os.path.join(BASE_DIR, 'static', 'fonts', 'arial.ttf')
+FONT_BOLD_PATH = os.path.join(BASE_DIR, 'static', 'fonts', 'arialbd.ttf')
+
+def get_font(path_list, size):
+    for path in path_list:
+        try:
+            return ImageFont.truetype(path, size)
+        except Exception:
+            continue
+    print(f"Warning: Could not load any font from {path_list}. Falling back to default.")
+    return ImageFont.load_default()
+
+FONT_REG  = get_font([FONT_REG_PATH, "arial.ttf", r"C:\Windows\Fonts\arial.ttf"], px(2.6))
+FONT_BOLD = get_font([FONT_BOLD_PATH, "arialbd.ttf", r"C:\Windows\Fonts\arialbd.ttf"], px(2.6))
 
 # ── Barcode generator ──────────────────────────────────────────
 def make_barcode(student_id):
